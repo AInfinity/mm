@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="welcome-section text-center mb-5">
+        <h1 class="display-4 mb-3">
+            <i class="fas fa-utensils welcome-icon"></i>
+            Welcome to Meat Meals
+        </h1>
+        <h2 class="text-muted mb-4">
+            Hello, <span class="user-name">{{ session.username }}</span>! 
+            <br>
+            <small class="text-muted">What would you like to cook today?</small>
+        </h2>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="dashboard-icon mb-3">
+                        <i class="fas fa-search fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="card-title">Search Recipes</h5>
+                    <p class="card-text">Search recipes by ingredients or dietary preferences</p>
+                    <a href="{{ url_for('search_recipes') }}" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Search
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="dashboard-icon mb-3">
+                        <i class="fas fa-calendar-alt fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Meal Plans</h5>
+                    <p class="card-text">View and manage your meal plans</p>
+                    <a href="{{ url_for('meal_plans') }}" class="btn btn-success">
+                        <i class="fas fa-calendar-alt me-2"></i>View Plans
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="dashboard-icon mb-3">
+                        <i class="fas fa-shopping-cart fa-3x text-info"></i>
+                    </div>
+                    <h5 class="card-title">Grocery List</h5>
+                    <p class="card-text">Generate your grocery list</p>
+                    <a href="{{ url_for('grocery_list') }}" class="btn btn-info text-white">
+                        <i class="fas fa-shopping-cart me-2"></i>Generate List
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="dashboard-icon mb-3">
+                        <i class="fas fa-random fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="card-title">Random Meal Plan</h5>
+                    <p class="card-text">Generate a random meal plan for the week</p>
+                    <a href="{{ url_for('random_meal_plan') }}" class="btn btn-warning">
+                        <i class="fas fa-random me-2"></i>Generate Plan
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="dashboard-icon mb-3">
+                        <i class="fas fa-chart-pie fa-3x text-danger"></i>
+                    </div>
+                    <h5 class="card-title">Nutrition Tracking</h5>
+                    <p class="card-text">Track your nutritional intake</p>
+                    <a href="{{ url_for('nutrition_tracking') }}" class="btn btn-danger">
+                        <i class="fas fa-chart-pie me-2"></i>View Stats
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

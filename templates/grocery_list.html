@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Grocery List</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('grocery_list') }}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" 
+                               value="{{ start_date }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="end_date" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" 
+                               value="{{ end_date }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary w-100">Generate List</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if ingredients %}
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Shopping List</h3>
+                <button class="btn btn-success" onclick="printList()">
+                    <i class="fas fa-print"></i> Print List
+                </button>
+            </div>
+            
+            <div id="grocery-list">
+                {% for category, items in ingredients.items() %}
+                <div class="category-section mb-4">
+                    <h4 class="text-capitalize">{{ category }}</h4>
+                    <ul class="list-group">
+                        {% for item in items %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="item-{{ loop.index }}">
+                                <label class="form-check-label" for="item-{{ loop.index }}">
+                                    {{ item.name }}
+                                </label>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">
+                                {{ item.amount }} {{ item.unit }}
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% elif submitted %}
+    <div class="alert alert-info">
+        No meals planned for the selected date range.
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

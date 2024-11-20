@@ -1,0 +1,259 @@
+body {
+    background-image: url('../images/your-background-image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: -1;
+}
+
+.card {
+    margin-top: 2rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: none;
+    padding: 1.5rem 1.5rem 0.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.btn-primary {
+    padding: 0.5rem 2rem;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+}
+
+.search-container {
+    margin-bottom: 2rem;
+}
+
+.recipe-card {
+    transition: transform 0.2s;
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+}
+
+.meal-card {
+    margin-top: 1rem;
+    transition: transform 0.2s;
+}
+
+.meal-card:hover {
+    transform: translateY(-2px);
+}
+
+.meal-section {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+}
+
+.meal-section:last-child {
+    border-bottom: none;
+}
+
+.btn-group {
+    margin-top: 0.5rem;
+}
+
+.card-header h4 {
+    margin-bottom: 0;
+}
+
+.category-section {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+}
+
+.category-section:last-child {
+    border-bottom: none;
+}
+
+.list-group-item {
+    user-select: none;
+}
+
+.form-check-input:checked + .form-check-label {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+@media print {
+    .btn, .form-check-input {
+        display: none !important;
+    }
+    
+    .card {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    .list-group-item {
+        border: none !important;
+        padding: 0.5rem 0 !important;
+    }
+} 
+
+.nutrition-progress .progress {
+    height: 0.5rem;
+}
+
+.nutrition-progress .progress-bar {
+    background-color: #28a745;
+}
+
+.meal-card .badge {
+    font-size: 0.9rem;
+}
+
+#macroChart {
+    max-height: 300px;
+}
+
+.hidden-data {
+    display: none;
+}
+.btn {
+    padding: 15px;
+    width: calc(100% -11px);
+  }
+/* Progress bar width classes */
+.progress-width-0 { width: 0%; }
+.progress-width-1 { width: 1%; }
+.progress-width-2 { width: 2%; }
+.progress-width-3 { width: 3%; }
+.progress-width-4 { width: 4%; }
+.progress-width-5 { width: 5%; }
+.progress-width-10 { width: 10%; }
+.progress-width-15 { width: 15%; }
+.progress-width-20 { width: 20%; }
+.progress-width-25 { width: 25%; }
+.progress-width-30 { width: 30%; }
+.progress-width-35 { width: 35%; }
+.progress-width-40 { width: 40%; }
+.progress-width-45 { width: 45%; }
+.progress-width-50 { width: 50%; }
+.progress-width-55 { width: 55%; }
+.progress-width-60 { width: 60%; }
+.progress-width-65 { width: 65%; }
+.progress-width-70 { width: 70%; }
+.progress-width-75 { width: 75%; }
+.progress-width-80 { width: 80%; }
+.progress-width-85 { width: 85%; }
+.progress-width-90 { width: 90%; }
+.progress-width-95 { width: 95%; }
+.progress-width-100 { width: 100%; }
+
+.meal-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+}
+
+.meal-card .row {
+    min-height: 150px;
+}
+
+.meal-card .card-body {
+    padding: 1rem;
+}
+
+.meal-card .btn-group {
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .meal-image {
+        height: 120px;
+    }
+    
+    .meal-card .row {
+        min-height: 120px;
+    }
+} 
+
+.dashboard-icon {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.dashboard-icon i {
+    transition: transform 0.3s ease;
+}
+
+.card:hover .dashboard-icon i {
+    transform: scale(1.1);
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+} 
+
+.welcome-section {
+    padding: 2rem 0;
+    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.welcome-icon {
+    font-size: 3.5rem;
+    color: #dc3545;
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite;
+}
+
+.user-name {
+    color: #dc3545;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-transform: capitalize;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+} 

@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">My Meal Plans</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="view_type" class="form-label">View</label>
+                    <select class="form-select" id="view_type" onchange="changeView(this.value)">
+                        <option value="day" {% if view_type == 'day' %}selected{% endif %}>Day</option>
+                        <option value="week" {% if view_type == 'week' %}selected{% endif %}>Week</option>
+                        <option value="month" {% if view_type == 'month' %}selected{% endif %}>Month</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="date_select" class="form-label">Select Date</label>
+                    <input type="date" class="form-control" id="date_select" 
+                           value="{{ selected_date }}" onchange="changeDate(this.value)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if view_type == 'day' %}
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">{{ selected_date }}</h3>
+                {% for meal_type in ['breakfast', 'lunch', 'dinner'] %}
+                    <div class="meal-section mb-4">
+                        <h4 class="text-capitalize">{{ meal_type }}</h4>
+                        {% set meal = meals.get(meal_type) %}
+                        {% if meal %}
+                            <div class="card meal-card">
+                                <div class="row g-0">
+                                    {% if meal.image %}
+                                    <div class="col-md-3">
+                                        <img src="{{ meal.image }}" class="img-fluid rounded-start meal-image" alt="{{ meal.title }}">
+                                    </div>
+                                    {% endif %}
+                                    <div class="col">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ meal.title }}</h5>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-info" 
+                                                        onclick="showNutritionInfo('{{ meal.recipe_id }}')">
+                                                    <i class="fas fa-info-circle me-1"></i>Nutrition
+                                                </button>
+                                                <button class="btn btn-sm btn-primary" 
+                                                        onclick="showRecipeDetails('{{ meal.recipe_id }}')">
+                                                    <i class="fas fa-book-open me-1"></i>View Recipe
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" 
+                                                        onclick="showChangeMealModal('{{ meal.recipe_id }}', '{{ meal.title }}')">
+                                                    <i class="fas fa-exchange-alt me-1"></i>Change
+                                                </button>
+                                                <button class="btn btn-sm btn-danger" 
+                                                        onclick="removeMeal('{{ meal.id }}')">
+                                                    <i class="fas fa-trash me-1"></i>Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No meal planned</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if view_type == 'week' %}
+        <div class="row">
+            {% for day in week_dates %}
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>{{ day.strftime('%A, %B %d') }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            {% for meal_type in ['breakfast', 'lunch', 'dinner'] %}
+                            <div class="col-md-4">
+                                <h5 class="text-capitalize">{{ meal_type }}</h5>
+                                {% set meal = weekly_meals.get((day.strftime('%Y-%m-%d'), meal_type)) %}
+                                {% if meal %}
+                                    <div class="card meal-card">
+                                        <div class="row g-0">
+                                            {% if meal.image %}
+                                            <div class="col-md-4">
+                                                <img src="{{ meal.image }}" class="img-fluid rounded-start meal-image" alt="{{ meal.title }}">
+                                            </div>
+                                            {% endif %}
+                                            <div class="col">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">{{ meal.title }}</h6>
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-sm btn-info" 
+                                                                onclick="showNutritionInfo('{{ meal.recipe_id }}')">
+                                                            <i class="fas fa-info-circle me-1"></i>Nutrition
+                                                        </button>
+                                                        <button class="btn btn-sm btn-primary" 
+                                                                onclick="showRecipeDetails('{{ meal.recipe_id }}')">
+                                                            <i class="fas fa-book-open me-1"></i>View Recipe
+                                                        </button>
+                                                        <button class="btn btn-sm btn-warning" 
+                                                                onclick="showChangeMealModal('{{ meal.recipe_id }}', '{{ meal.title }}')">
+                                                            <i class="fas fa-exchange-alt me-1"></i>Change
+                                                        </button>
+                                                        <button class="btn btn-sm btn-danger" 
+                                                                onclick="removeMeal('{{ meal.id }}')">
+                                                            <i class="fas fa-trash me-1"></i>Remove
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted">No meal planned</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if view_type == 'month' %}
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h3 class="text-center">{{ month_dates[0].strftime('%B %Y') }}</h3>
+            </div>
+            {% for date in month_dates %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>{{ date.strftime('%A, %B %d') }}</h4>
+                    </div>
+                    <div class="card-body">
+                        {% for meal_type in ['breakfast', 'lunch', 'dinner'] %}
+                        <div class="mb-3">
+                            <h5 class="text-capitalize">{{ meal_type }}</h5>
+                            {% set meal = monthly_meals.get((date.strftime('%Y-%m-%d'), meal_type)) %}
+                            {% if meal %}
+                                <div class="card meal-card">
+                                    <div class="row g-0">
+                                        {% if meal.image %}
+                                        <div class="col-md-4">
+                                            <img src="{{ meal.image }}" class="img-fluid rounded-start meal-image" alt="{{ meal.title }}">
+                                        </div>
+                                        {% endif %}
+                                        <div class="col">
+                                            <div class="card-body">
+                                                <h6 class="card-title">{{ meal.title }}</h6>
+                                                <div class="btn-group">
+                                                    <button class="btn btn-sm btn-info" 
+                                                            onclick="showNutritionInfo('{{ meal.recipe_id }}')">
+                                                        <i class="fas fa-info-circle me-1"></i>Nutrition
+                                                    </button>
+                                                    <button class="btn btn-sm btn-primary" 
+                                                            onclick="showRecipeDetails('{{ meal.recipe_id }}')">
+                                                        <i class="fas fa-book-open me-1"></i>View Recipe
+                                                    </button>
+                                                    <button class="btn btn-sm btn-warning" 
+                                                            onclick="showChangeMealModal('{{ meal.recipe_id }}', '{{ meal.title }}')">
+                                                        <i class="fas fa-exchange-alt me-1"></i>Change
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" 
+                                                            onclick="removeMeal('{{ meal.id }}')">
+                                                        <i class="fas fa-trash me-1"></i>Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <p class="text-muted">No meal planned</p>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+<!-- Nutrition Info Modal -->
+<div class="modal fade" id="nutritionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nutrition Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="nutritionModalBody">
+                Loading...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recipe Details Modal -->
+<div class="modal fade" id="recipeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Recipe Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="recipeModalBody">
+                Loading...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Meal Modal -->
+<div class="modal fade" id="changeMealModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Meal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="searchRecipesForm" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="change_ingredients" class="form-label">Ingredients</label>
+                            <select class="form-select" id="change_ingredients" multiple data-live-search="true">
+                                <option value="chicken">Chicken</option>
+                                <option value="beef">Beef</option>
+                                <option value="pork">Pork</option>
+                                <option value="fish">Fish</option>
+                                <option value="rice">Rice</option>
+                                <option value="pasta">Pasta</option>
+                                <option value="potato">Potato</option>
+                                <option value="carrot">Carrot</option>
+                                <option value="onion">Onion</option>
+                                <option value="garlic">Garlic</option>
+                                <option value="tomato">Tomato</option>
+                                <option value="broccoli">Broccoli</option>
+                                <option value="spinach">Spinach</option>
+                                <option value="mushroom">Mushroom</option>
+                                <option value="cheese">Cheese</option>
+                                <option value="egg">Egg</option>
+                                <option value="milk">Milk</option>
+                                <option value="butter">Butter</option>
+                                <option value="olive oil">Olive Oil</option>
+                            </select>
+                            <div class="form-text">Hold Ctrl/Cmd to select multiple ingredients</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="change_diet" class="form-label">Dietary Preference</label>
+                            <select class="form-select" id="change_diet">
+                                <option value="">Any</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="gluten-free">Gluten Free</option>
+                                <option value="ketogenic">Ketogenic</option>
+                                <option value="paleo">Paleo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary" onclick="searchRecipesForChange()">
+                            <i class="fas fa-search me-1"></i>Search Recipes
+                        </button>
+                        <form id="changeMealForm" method="POST" action="{{ url_for('change_meal') }}" class="d-inline">
+                            <input type="hidden" id="new_recipe_id" name="new_recipe_id">
+                            <input type="hidden" id="change_date" name="date">
+                            <input type="hidden" id="change_meal_type" name="meal_type">
+                            <button type="submit" class="btn btn-warning" id="confirmChangeBtn" disabled>
+                                <i class="fas fa-exchange-alt me-1"></i>Confirm Change
+                            </button>
+                        </form>
+                    </div>
+                </form>
+
+                <div id="searchResults" class="d-none mt-4">
+                    <h6 class="mb-3">Search Results</h6>
+                    <div id="recipeResults" class="row g-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

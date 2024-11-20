@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Generate Random Meal Plan</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('random_meal_plan') }}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" 
+                               value="{{ start_date }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="diet" class="form-label">Dietary Preference</label>
+                        <select class="form-select" id="diet" name="diet">
+                            <option value="">Any</option>
+                            <option value="vegetarian">Vegetarian</option>
+                            <option value="vegan">Vegan</option>
+                            <option value="gluten-free">Gluten Free</option>
+                            <option value="ketogenic">Ketogenic</option>
+                            <option value="paleo">Paleo</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary w-100">Generate Plan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if success %}
+    <div class="alert alert-success">
+        Random meal plan has been generated successfully!
+        <a href="{{ url_for('meal_plans') }}" class="btn btn-link">View Meal Plans</a>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

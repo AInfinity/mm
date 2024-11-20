@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Nutrition Tracking</h2>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('nutrition_tracking') }}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="view_type" class="form-label">View</label>
+                        <select class="form-select" id="view_type" name="view_type">
+                            <option value="day" {% if view_type == 'day' %}selected{% endif %}>Daily</option>
+                            <option value="week" {% if view_type == 'week' %}selected{% endif %}>Weekly</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" value="{{ selected_date }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary w-100">View Nutrition</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if nutrition_data %}
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title">Macronutrients</h4>
+                    <canvas id="macroChart"></canvas>
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-between border-bottom py-2">
+                            <span>Calories</span>
+                            <strong>{{ nutrition_data.calories }} kcal</strong>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom py-2">
+                            <span>Protein</span>
+                            <strong>{{ nutrition_data.protein }}g</strong>
+                        </div>
+                        <div class="d-flex justify-content-between border-bottom py-2">
+                            <span>Carbohydrates</span>
+                            <strong>{{ nutrition_data.carbs }}g</strong>
+                        </div>
+                        <div class="d-flex justify-content-between py-2">
+                            <span>Fat</span>
+                            <strong>{{ nutrition_data.fat }}g</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title">Micronutrients</h4>
+                    <div class="nutrition-progress">
+                        {% for nutrient in nutrition_data.micronutrients %}
+                            {% set progress = (nutrient.amount / nutrient.daily_value * 100)|round %}
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>{{ nutrient.name }}</span>
+                                    <span>{{ nutrient.amount }}{{ nutrient.unit }} / {{ nutrient.daily_value }}{{ nutrient.unit }}</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-width-{{ progress }}" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if meals %}
+    <div class="card">
+        <div class="card-body">
+            <h4 class="mb-4">Meals</h4>
+            {% for meal_type, meal_items in meals.items() %}
+            <div class="meal-section mb-4">
+                <h5 class="text-capitalize">{{ meal_type }}</h5>
+                {% for meal in meal_items %}
+                <div class="card meal-card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            {% if meal.image %}
+                            <div class="col-md-2">
+                                <img src="{{ meal.image }}" class="img-fluid rounded" alt="{{ meal.title }}">
+                            </div>
+                            {% endif %}
+                            <div class="col">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0">{{ meal.title }}</h6>
+                                    <span class="badge bg-primary">{{ meal.calories }} kcal</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-info mt-2" 
+                                        onclick="showNutritionInfo('{{ meal.recipe_id }}')">
+                                    Nutrition Info
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% elif submitted %}
+    <div class="alert alert-info">
+        No meals planned for the selected period.
+    </div>
+    {% endif %}
+</div>
+
+<!-- Hidden data for chart -->
+{% if nutrition_data %}
+<div id="nutritionData" data-protein="{{ nutrition_data.protein }}" data-carbs="{{ nutrition_data.carbs }}" data-fat="{{ nutrition_data.fat }}" class="hidden-data"></div>
+{% endif %}
+
+<!-- Nutrition Info Modal -->
+<div class="modal fade" id="nutritionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nutrition Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="nutritionModalBody">
+                Loading...
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/nutrition-chart.js') }}"></script>
+{% endblock %} 
