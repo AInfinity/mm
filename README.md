@@ -16,10 +16,15 @@ Ensure you have the following installed on your machine:
 
 Python: Version 3.11.9
 Required Python frameworks:
+
 Flask==3.1.0
+
 pyodbc==5.2.0
+
 requests==2.32.3
+
 Werkzeug==3.1.3
+
 gunicorn==23.0.0
 
 You can install the required frameworks using the following command in your terminal or command prompt:
