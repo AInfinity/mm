@@ -28,6 +28,7 @@ Werkzeug==3.1.3
 gunicorn==23.0.0
 
 You can install the required frameworks using the following command in your terminal or command prompt:
+
 pip install 'framework-name==version'
 
 Setting Up the Project
@@ -36,10 +37,12 @@ Download all project files to your local machine and ensure they are stored in a
 
 Navigate to the Project Directory
 Open your terminal or command prompt and navigate to the project folder using:
+
 cd <your-project-file-location>
 
 Run the Application Locally
 To launch the project in debug mode, execute:
+
 python app.py
 
 Once running, open a browser and go to:
