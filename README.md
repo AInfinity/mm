@@ -15,6 +15,7 @@ Prerequisites
 Ensure you have the following installed on your machine:
 
 Python: Version 3.11.9
+
 Required Python frameworks:
 
 Flask==3.1.0
