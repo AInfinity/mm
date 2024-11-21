@@ -38,7 +38,7 @@ Download all project files to your local machine and ensure they are stored in a
 Navigate to the Project Directory
 Open your terminal or command prompt and navigate to the project folder using:
 
-cd <your-project-file-location>
+cd 'your-project-file-location'
 
 Run the Application Locally
 To launch the project in debug mode, execute:
