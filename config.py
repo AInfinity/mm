@@ -4,10 +4,10 @@ import os
 SPOONACULAR_API_KEY = 'da6f49a4979c4bda9781caf077009fbc'
 
 # Database Configuration
-DB_SERVER = 'sfwrtech4sa3.database.windows.net'
-DB_NAME = 'meatmeals'
-DB_USERNAME = 'sfwrtech4sa3'
-DB_PASSWORD = 'Summer2024'
+DB_SERVER = 'meatmealgroup2.database.windows.net'
+DB_NAME = 'meatmeal2'
+DB_USERNAME = 'group2'
+DB_PASSWORD = 'Seniorproject!'
 DB_DRIVER = '{ODBC Driver 17 for SQL Server}'
 
 # Session Configuration
